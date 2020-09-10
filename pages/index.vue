@@ -84,7 +84,7 @@
                 </div>
                 <div class="mt-1.5">
                   <ul class="grid grid-cols-1">
-                    <li :key="event.Title" v-for="event in mappedEvents((n - firstDayOfMonth) + 1)" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
+                    <li :key="event.Title" v-for="event in mappedEvents((n - firstDayOfMonth) + 1, true)" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
                       <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-5 text-white text-sm leading-3 font-medium rounded-l-md">
                         {{ event.Type[0] }}
                       </div>
@@ -112,6 +112,21 @@
               </div>
               <div :key="n" v-for="n in 7" :class="determineBorder(n)" class="p-2 h-screen w-full border-gray-200">
                 <span>{{ (n + currentDayOfMonth) - currentDayOfWeek - 1 }}</span>
+                <div class="mt-1.5">
+                  <ul class="grid grid-cols-1">
+                    <li :key="event.Title" v-for="event in mappedEvents((n + currentDayOfMonth) - currentDayOfWeek - 1, false )" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
+                      <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-5 text-white text-sm leading-3 font-medium rounded-l-md">
+                        {{ event.Type[0] }}
+                      </div>
+                      <div class="pl-1 flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                        <div class="flex-1 text-sm leading-5 truncate">
+                          <a href="#" class="text-xs text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150">{{ event.Title }}</a>
+                          <p class="text-xs text-gray-500">{{ event.Time }}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -233,9 +248,14 @@ export default {
       const date = new Date(this.year, this.month -1, day)
       return(date.getTime() === this.currentDate.getTime() ? true:false)
     },
-    mappedEvents(day) {
+    mappedEvents(day, limitArrayLength) {
       const date = new Date(this.year, this.month -1, day)
-      return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()).slice(0, 3)
+
+      if(limitArrayLength) {
+        return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()).slice(0, 3)
+      } else {
+        return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime())
+      }
     },
     numOfEventsByDay(day) {
       const date = new Date(this.year, this.month -1, day)
