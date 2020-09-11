@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="mx-auto p-4">
     <div class="mx-auto">
       <div class="bg-white shadow rounded-lg">
         <div class="bg-white px-4 py-5 border-b rounded-t-lg border-gray-200 sm:px-6">
@@ -28,7 +28,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-4 mt-4 flex-shrink-0 flex">
+            <div class="ml-4 mt-4 flex-shrink-0 flex items-center">
               <div class="relative inline-block text-left">
                 <div>
                   <span class="rounded-md shadow-sm">
@@ -60,6 +60,15 @@
                   </div>
                 </transition>
               </div>
+              <div class="ml-6">
+                <span class="inline-flex rounded-full shadow-sm">
+                  <button type="button" class="inline-flex items-center px-2.5 py-2.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                    <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -69,18 +78,31 @@
               <div :key="weekday" v-for="weekday in weekdaysAbv" class="p-0.5 flex justify-center">
                 <p class="text-xs uppercase font-semibold text-gray-500">{{ weekday }}</p>
               </div>
-              <div :key="n" v-for="n in 42" :class="determineBorder(n)" class="p-2 w-full border-gray-200" style="height: 10.8rem;">
+              <div :key="n" v-for="n in 42" :class="determineBorder(n)" class="relative p-2 w-full border-gray-200" style="height: 10.8rem;" @mouseover="currentHoveringDay = n" @mouseleave="currentHoveringDay = 0">
+                <transition name="fade" mode="out-in">
+                  <div v-if="currentHoveringDay === n" class="absolute">
+                    <span class="inline-flex rounded-full shadow-sm">
+                      <button type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                        <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                </transition>
                 <div class="text-center">
-                  <span v-if="(n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth && !highlightCurrentDay((n - firstDayOfMonth) + 1)">
-                    <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
-                      {{ (n - firstDayOfMonth) + 1 }}
-                    </button>
-                  </span>
-                  <span v-if="highlightCurrentDay((n - firstDayOfMonth) + 1)" class="inline-flex items-center">
-                    <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 text-white bg-gray-700 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
-                      {{ (n - firstDayOfMonth) + 1 }}
-                    </button>
-                  </span>
+                  <div>
+                    <span v-if="(n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth && !highlightCurrentDay((n - firstDayOfMonth) + 1)">
+                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
+                        {{ (n - firstDayOfMonth) + 1 }}
+                      </button>
+                    </span>
+                    <span v-if="highlightCurrentDay((n - firstDayOfMonth) + 1)" class="inline-flex items-center">
+                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 text-white bg-gray-700 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
+                        {{ (n - firstDayOfMonth) + 1 }}
+                      </button>
+                    </span>
+                  </div>
                 </div>
                 <div class="mt-1.5">
                   <ul class="grid grid-cols-1">
@@ -183,7 +205,9 @@ export default {
         {'Type': 'Meeting', 'Title': 'Catch up with John', 'DateTime':'September 20, 2020 12:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '16:00:00'},
         {'Type': 'Event', 'Title': 'Drinks for fundraiser', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'},
         {'Type': 'Event', 'Title': 'Golf with Clients', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'}
-      ]
+      ],
+
+      currentHoveringDay: null
     }
   },
   computed: {
@@ -264,6 +288,9 @@ export default {
     determineEventColorClass(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
+    },
+    currentHover(day) {
+      this.currentHoveringDay = day;
     }
   }
 }
