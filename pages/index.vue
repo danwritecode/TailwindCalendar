@@ -98,25 +98,49 @@
                         leave-class="transform opacity-100 scale-100"
                         leave-to-class="transform opacity-0 scale-95"
                     >
-                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 w-64 rounded-md shadow-lg bg-white z-10">
+                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 rounded-md shadow-lg bg-white z-10" style="width:18rem;">
                         <div class="p-3 rounded-md bg-white shadow-xs">
                           <div class="flex-1 flex flex-col justify-between">
                             <div class="divide-y divide-gray-200">
                               <div class="space-y-2">
-                                <div class="space-y-1">
-                                  <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
-                                    Date
-                                  </label>
-                                  <div class="relative">
-                                    <h6 class="text-gray-600 text-sm leading-3">{{ $moment(currentlySelectedDate).format('MM/DD/YYYY') }}</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
+                                      Date
+                                    </label>
+                                    <div class="relative">
+                                      <h6 class="text-gray-600 text-sm leading-5">{{ $moment(currentlySelectedDate).format('MM/DD/YYYY') }}</h6>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
+                                      Time
+                                    </label>
+                                    <div class="relative flex flex-no-wrap">
+                                      <input v-model="eventAddFormValues.Hour" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
+                                      <span class="block mx-1 font-black">:</span>
+                                      <input v-model="eventAddFormValues.Minute" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
+                                    </div>
                                   </div>
                                 </div>
                                 <div class="space-y-1">
-                                  <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
+                                  <label for="event_type" class="block text-sm font-medium leading-5 text-gray-900">
+                                    Type
+                                  </label>
+                                  <div class="relative rounded-md shadow-sm">
+                                    <select v-model="eventAddFormValues.Type" id="location" class="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                      <option>Meeting</option>
+                                      <option>Event</option>
+                                      <option>Workout</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="space-y-1">
+                                  <label for="event_title" class="block text-sm font-medium leading-5 text-gray-900">
                                     Event Title
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <input id="event_title" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+                                    <input v-model="eventAddFormValues.Title" id="event_title" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150">
                                   </div>
                                 </div>
                                 <div class="space-y-1">
@@ -124,7 +148,7 @@
                                     Description
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <textarea id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
+                                    <textarea v-model="eventAddFormValues.Description" id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
                                   </div>
                                 </div>
                               </div>
@@ -248,6 +272,15 @@ export default {
       weekdaysAbv: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
       showCalendarTypeDropdown: false,
       showQuickAddDropDown: false,
+      eventAddFormValues: {
+        'Date': null,
+        'Time': null,
+        'Hour': null,
+        'Minute': null,
+        'Type': null,
+        'Title': null,
+        'Description': null
+      },
       currentCalendarLayout: 'Month',
       
       calendarData: [
