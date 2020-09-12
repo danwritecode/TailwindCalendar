@@ -83,7 +83,7 @@
                   <div v-if="currentHoveringDay === n && (n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth" class="relative w-4">
                     <div class="absolute">
                       <span class="inline-flex rounded-full shadow-sm">
-                        <button @click="showQuickAddDropDown = !showQuickAddDropDown" type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                        <button @click="showQuickAddDropDown = !showQuickAddDropDown, setCurrentDay((n - firstDayOfMonth) + 1)" type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
                           <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                           </svg>
@@ -98,17 +98,44 @@
                         leave-class="transform opacity-100 scale-100"
                         leave-to-class="transform opacity-0 scale-95"
                     >
-                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 w-56 rounded-md shadow-lg bg-white z-10">
-                        <div class="rounded-md bg-white shadow-xs">
-                          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Account settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Support</a>
-                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">License</a>
-                            <form method="POST" action="#">
-                              <button type="submit" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">
-                                Sign out
+                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 w-64 rounded-md shadow-lg bg-white z-10">
+                        <div class="p-3 rounded-md bg-white shadow-xs">
+                          <div class="flex-1 flex flex-col justify-between">
+                            <div class="divide-y divide-gray-200">
+                              <div class="space-y-2">
+                                <div class="space-y-1">
+                                  <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
+                                    Date
+                                  </label>
+                                  <div class="relative">
+                                    <h6 class="text-gray-600 text-sm leading-3">{{ $moment(currentlySelectedDate).format('MM/DD/YYYY') }}</h6>
+                                  </div>
+                                </div>
+                                <div class="space-y-1">
+                                  <label for="project_name" class="block text-sm font-medium leading-5 text-gray-900">
+                                    Event Title
+                                  </label>
+                                  <div class="relative rounded-md shadow-sm">
+                                    <input id="event_title" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+                                  </div>
+                                </div>
+                                <div class="space-y-1">
+                                  <label for="description" class="block text-sm font-medium leading-5 text-gray-900">
+                                    Description
+                                  </label>
+                                  <div class="relative rounded-md shadow-sm">
+                                    <textarea id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flex justify-end mt-2">
+                            <span class="inline-flex rounded-md shadow-sm">
+                              <button type="button" class="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-6 font-medium rounded-md text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                                Save
                               </button>
-                            </form>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -118,12 +145,12 @@
                 <div class="text-center">
                   <div>
                     <span v-if="(n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth && !highlightCurrentDay((n - firstDayOfMonth) + 1)">
-                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
+                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1), currentCalendarLayout = 'Day'" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
                         {{ (n - firstDayOfMonth) + 1 }}
                       </button>
                     </span>
                     <span v-if="highlightCurrentDay((n - firstDayOfMonth) + 1)" class="inline-flex items-center">
-                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 text-white bg-gray-700 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
+                      <button @click="setCurrentDay((n - firstDayOfMonth) + 1), currentCalendarLayout = 'Day'" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 text-white bg-gray-600 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
                         {{ (n - firstDayOfMonth) + 1 }}
                       </button>
                     </span>
@@ -299,7 +326,6 @@ export default {
       const dateSelected = new Date(this.year, this.month -1, day)
       this.currentDayOfMonth = day
       this.currentDayOfWeek = dateSelected.getDay()
-      this.currentCalendarLayout = 'Day'
     },
     highlightCurrentDay(day){
       const date = new Date(this.year, this.month -1, day)
