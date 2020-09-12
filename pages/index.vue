@@ -98,7 +98,7 @@
                         leave-class="transform opacity-100 scale-100"
                         leave-to-class="transform opacity-0 scale-95"
                     >
-                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 rounded-md shadow-lg bg-white z-10" style="width:18rem;">
+                      <div v-if="showQuickAddDropDown" :class="quickAddEvent_DropdownClass(n)" class="mt-7 origin-top-right absolute rounded-md shadow-lg bg-white z-10" style="width:18rem;">
                         <div class="p-3 rounded-md bg-white shadow-xs">
                           <div class="flex-1 flex flex-col justify-between">
                             <div class="divide-y divide-gray-200">
@@ -170,7 +170,7 @@
                   <div>
                     <span v-if="(n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth && !highlightCurrentDay((n - firstDayOfMonth) + 1)">
                       <button @click="setCurrentDay((n - firstDayOfMonth) + 1), currentCalendarLayout = 'Day'" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-5 bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
-                        {{ (n - firstDayOfMonth) + 1 }}
+                        {{ (n - firstDayOfMonth) + 1 }} |||| {{ n }}
                       </button>
                     </span>
                     <span v-if="highlightCurrentDay((n - firstDayOfMonth) + 1)" class="inline-flex items-center">
@@ -396,6 +396,16 @@ export default {
     determineEventColorClass(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
+    },
+    quickAddEvent_DropdownClass(indexPos) {
+      const leftIndexes = [1,8,15,22,29,36]
+      const rightIndexes = [7,14,21,28,35]
+
+      if(rightIndexes.indexOf(indexPos) !== -1) {
+        return 'right-0'
+      } else {
+        return 'left-0'
+      }
     }
   }
 }
