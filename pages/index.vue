@@ -49,7 +49,7 @@
                     leave-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95"
                 >
-                  <div v-if="showCalendarTypeDropdown" class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg">
+                  <div v-if="showCalendarTypeDropdown" class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg z-10">
                     <div class="rounded-md bg-white shadow-xs">
                       <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <button @click="currentCalendarLayout = 'Month', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Month</button>
@@ -80,14 +80,39 @@
               </div>
               <div :key="n" v-for="n in 42" :class="determineBorder(n)" class="relative p-2 w-full border-gray-200" style="height: 10.8rem;" @mouseover="currentHoveringDay = n" @mouseleave="currentHoveringDay = 0">
                 <transition name="fade" mode="out-in">
-                  <div v-if="currentHoveringDay === n" class="absolute">
-                    <span class="inline-flex rounded-full shadow-sm">
-                      <button type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
-                        <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                      </button>
-                    </span>
+                  <div v-if="currentHoveringDay === n && (n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth" class="relative w-4">
+                    <div class="absolute">
+                      <span class="inline-flex rounded-full shadow-sm">
+                        <button @click="showQuickAddDropDown = !showQuickAddDropDown" type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                          <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                        </button>
+                      </span>
+                    </div>
+                    <transition       
+                        enter-active-class="transition ease-out duration-100"
+                        enter-class="transform opacity-0 scale-95"
+                        enter-to-class="transform opacity-100 scale-100"
+                        leave-active-class="transition ease-in duration-75"
+                        leave-class="transform opacity-100 scale-100"
+                        leave-to-class="transform opacity-0 scale-95"
+                    >
+                      <div v-if="showQuickAddDropDown" class="mt-7 origin-top-right absolute left-0 w-56 rounded-md shadow-lg bg-white z-10">
+                        <div class="rounded-md bg-white shadow-xs">
+                          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Account settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Support</a>
+                            <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">License</a>
+                            <form method="POST" action="#">
+                              <button type="submit" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">
+                                Sign out
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </transition>
                   </div>
                 </transition>
                 <div class="text-center">
@@ -121,7 +146,7 @@
                 </div>
                 <div v-if="numOfEventsByDay((n - firstDayOfMonth) + 1) > 3" class="mt-1">
                   <button @click="setCurrentDay((n - firstDayOfMonth) + 1)" type="button" class="w-full px-2.5 py-1 border border-transparent text-xs leading-4 font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-50 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray active:bg-gray-200 transition ease-in-out duration-150">
-                    View All {{ numOfEventsByDay((n - firstDayOfMonth) + 1) }} Events
+                    View All ({{ numOfEventsByDay((n - firstDayOfMonth) + 1) }})
                   </button>
                 </div>
               </div>
@@ -195,6 +220,7 @@ export default {
       months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
       weekdaysAbv: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
       showCalendarTypeDropdown: false,
+      showQuickAddDropDown: false,
       currentCalendarLayout: 'Month',
       
       calendarData: [
@@ -207,7 +233,7 @@ export default {
         {'Type': 'Event', 'Title': 'Golf with Clients', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'}
       ],
 
-      currentHoveringDay: null
+      currentHoveringDay: 0
     }
   },
   computed: {
@@ -234,6 +260,13 @@ export default {
     },
     eventsForCurrentDay: function() {
       return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime())
+    }
+  },
+  watch: {
+    currentHoveringDay: function() {
+      if(this.currentHoveringDay === 0) {
+        this.showQuickAddDropDown = false
+      }
     }
   },
   methods: {
@@ -288,18 +321,20 @@ export default {
     determineEventColorClass(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
-    },
-    currentHover(day) {
-      this.currentHoveringDay = day;
     }
   }
 }
 </script>
 
 <style>
-.fade-enter-active,
+.fade-enter-active {
+  transition-duration: 0.6s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
 .fade-leave-active {
-  transition-duration: 0.3s;
+  transition-duration: 0.15s;
   transition-property: opacity;
   transition-timing-function: ease;
 }
