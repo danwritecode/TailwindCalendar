@@ -117,9 +117,9 @@
                                       Time
                                     </label>
                                     <div class="relative flex flex-no-wrap">
-                                      <input v-model="eventAddFormValues.Hour" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
+                                      <input v-model="eventAdd_FormValues.Hour" :class="!validHourInput ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red':'focus:border-blue-300'" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
                                       <span class="block mx-1 font-black">:</span>
-                                      <input v-model="eventAddFormValues.Minute" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
+                                      <input v-model="eventAdd_FormValues.Minute" :class="!validMinuteInput ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red':'focus:border-blue-300'" class="bg-white text-sm focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg px-2 block w-9 appearance-none leading-normal transition ease-in-out duration-150">
                                     </div>
                                   </div>
                                 </div>
@@ -128,7 +128,7 @@
                                     Type
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <select v-model="eventAddFormValues.Type" id="location" class="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                    <select v-model="eventAdd_FormValues.Type" id="location" class="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                                       <option>Meeting</option>
                                       <option>Event</option>
                                       <option>Workout</option>
@@ -140,7 +140,7 @@
                                     Event Title
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <input v-model="eventAddFormValues.Title" id="event_title" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150">
+                                    <input v-model="eventAdd_FormValues.Title" id="event_title" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150">
                                   </div>
                                 </div>
                                 <div class="space-y-1">
@@ -148,7 +148,7 @@
                                     Description
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <textarea v-model="eventAddFormValues.Description" id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
+                                    <textarea v-model="eventAdd_FormValues.Description" id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
                                   </div>
                                 </div>
                               </div>
@@ -272,7 +272,7 @@ export default {
       weekdaysAbv: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
       showCalendarTypeDropdown: false,
       showQuickAddDropDown: false,
-      eventAddFormValues: {
+      eventAdd_FormValues: {
         'Date': null,
         'Time': null,
         'Hour': null,
@@ -320,6 +320,22 @@ export default {
     },
     eventsForCurrentDay: function() {
       return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime())
+    },
+    validHourInput: function() {
+      if(this.eventAdd_FormValues.Hour) {
+          const re = /0[1-9]|1[0-2]|[1-9]/;
+          return re.test(String(this.eventAdd_FormValues.Hour));
+      } else {
+          return true
+      }
+    },
+    validMinuteInput: function() {
+      if(this.eventAdd_FormValues.Minute) {
+          const re = /0[1-9]|1[0-2]/;
+          return re.test(String(this.eventAdd_FormValues.Minute));
+      } else {
+          return true
+      }
     }
   },
   watch: {
