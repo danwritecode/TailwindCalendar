@@ -360,22 +360,6 @@ export default {
     eventsForCurrentDay: function() {
       return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime())
     },
-    validHourInput: function() {
-      if(this.eventAdd_FormValues.Hour) {
-          const re = /0?[1-9]|1[0-2]/;
-          return re.test(String(this.eventAdd_FormValues.Hour));
-      } else {
-          return true
-      }
-    },
-    validMinuteInput: function() {
-      if(this.eventAdd_FormValues.Minute) {
-          const re = /0[1-9]|1[0-2]/;
-          return re.test(String(this.eventAdd_FormValues.Minute));
-      } else {
-          return true
-      }
-    },
     eventAddFormValidation: function() {
       if(this.eventAdd_FormValues.Hour && this.eventAdd_FormValues.Minute && this.eventAdd_FormValues.Type && this.eventAdd_FormValues.Title && this.eventAdd_FormValues.Description) {
         return true
