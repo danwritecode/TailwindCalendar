@@ -78,7 +78,7 @@
               <div :key="weekday" v-for="weekday in weekdaysAbv" class="p-0.5 flex justify-center">
                 <p class="text-xs uppercase font-semibold text-gray-500">{{ weekday }}</p>
               </div>
-              <div :key="n" v-for="n in 42" :class="determineBorder(n)" class="relative p-2 w-full border-gray-200" style="height: 10.8rem;" @mouseover="currentHoveringDay = n" @mouseleave="currentHoveringDay = 0">
+              <div :key="n" v-for="n in 42" :class="determineBorder(n)" class="relative p-2 w-full border-gray-200" style="height: 10.8rem;" @mouseover="currentHoveringDay = n" @mouseleave="showQuickAddDropDown = false">
                 <transition name="fade" mode="out-in">
                   <div v-if="currentHoveringDay === n && (n - firstDayOfMonth) + 1 > 0 && (n - firstDayOfMonth) + 1 <= daysInMonth" class="relative w-4">
                     <div class="absolute">
@@ -365,13 +365,6 @@ export default {
         return true
       } else {
         return false
-      }
-    }
-  },
-  watch: {
-    currentHoveringDay: function() {
-      if(this.currentHoveringDay === 0) {
-        this.showQuickAddDropDown = false
       }
     }
   },
