@@ -181,10 +181,10 @@
                                 </div>
                                 <div class="space-y-1">
                                   <label for="description" class="block text-sm font-medium leading-5 text-gray-900">
-                                    Description
+                                    Body
                                   </label>
                                   <div class="relative rounded-md shadow-sm">
-                                    <textarea v-model="eventAdd_FormValues.Description" id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
+                                    <textarea v-model="eventAdd_FormValues.Body" id="description" rows="4" class="form-input block w-full sm:text-sm sm:leading-5 transition ease-in-out duration-150"></textarea>
                                   </div>
                                 </div>
                               </div>
@@ -221,13 +221,13 @@
                 </div>
                 <div class="mt-1.5">
                   <ul class="grid grid-cols-1">
-                    <li :key="event.Title" v-for="event in mappedEvents((n - firstDayOfMonth) + 1, true)" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
+                    <li :key="event.Event_Id" v-for="event in mappedEvents((n - firstDayOfMonth) + 1, true)" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
                       <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-5 text-white text-sm leading-3 font-medium rounded-l-md">
                         {{ event.Type[0] }}
                       </div>
                       <div class="pl-1 flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
                         <div class="flex-1 text-sm leading-3 truncate">
-                          <a href="#" class="text-xs text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150">{{ event.Title }}</a>
+                          <button @click="toggleSidePanel('ViewEvent', event.Event_Id)" class="text-xs text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150 focus:outline-none">{{ event.Title }}</button>
                           <p class="text-xs text-gray-500">{{ event.Time }}</p>
                         </div>
                       </div>
@@ -318,20 +318,10 @@ export default {
         'Minute': null,
         'Type': null,
         'Title': null,
-        'Description': null
+        'Body': null
       },
       currentCalendarLayout: 'Month',
-      
-      calendarData: [
-        {'Type': 'Meeting', 'Title': 'Get coffee with Dave', 'DateTime':'September 20, 2020 12:00:00', 'Year': 2020, 'Month': 9, 'Day':10, 'Time': '12:00:00'},
-        {'Type': 'Workout', 'Title': 'Go for a bike ride', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':10, 'Time': '14:00:00'},
-        {'Type': 'Meeting', 'Title': 'Get coffee with Jane', 'DateTime':'September 20, 2020 12:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '12:00:00'},
-        {'Type': 'Workout', 'Title': 'Go for a bike ride', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '14:00:00'},
-        {'Type': 'Meeting', 'Title': 'Catch up with John', 'DateTime':'September 20, 2020 12:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '16:00:00'},
-        {'Type': 'Event', 'Title': 'Drinks for fundraiser', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'},
-        {'Type': 'Event', 'Title': 'Golf with Clients', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'}
-      ],
-
+      calendarData: null,
       currentHoveringDay: 0
     }
   },
@@ -367,6 +357,10 @@ export default {
         return false
       }
     }
+  },
+  created() {
+    // This is to simulate an API call or GQL call to fetch the data, in this instance I'm just getting it from the Store since it's test data.
+    this.calendarData = this.$store.getters['TestData/eventData']
   },
   methods: {
     addNewEvent(day) {
@@ -456,7 +450,11 @@ export default {
       this.eventAdd_FormValues.Description = null
 
       this.showQuickAddDropDown = false
-    }
+    },
+    toggleSidePanel(panelType, entityId) {
+      this.$store.dispatch('SidePanel/setSidePanelType', panelType)
+      this.$store.dispatch('SidePanel/setSidePanelEntityId', entityId)
+    },
   }
 }
 </script>
