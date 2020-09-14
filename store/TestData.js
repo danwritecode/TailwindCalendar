@@ -20,7 +20,7 @@ export const getters = {
 
 export const mutations = {
   ADD_EVENTDATA: function(state, event) {
-    state.eventData.push(panelState)
+    state.eventData.push(event)
   },
 };
 

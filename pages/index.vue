@@ -351,7 +351,7 @@ export default {
       return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime())
     },
     eventAddFormValidation: function() {
-      if(this.eventAdd_FormValues.Hour && this.eventAdd_FormValues.Minute && this.eventAdd_FormValues.Type && this.eventAdd_FormValues.Title && this.eventAdd_FormValues.Description) {
+      if(this.eventAdd_FormValues.Hour && this.eventAdd_FormValues.Minute && this.eventAdd_FormValues.Type && this.eventAdd_FormValues.Title && this.eventAdd_FormValues.Body) {
         return true
       } else {
         return false
@@ -376,7 +376,7 @@ export default {
                             'Time': this.eventAdd_FormValues.Hour + ':' + this.eventAdd_FormValues.Minute + ':00'
                           }
 
-      this.calendarData.push(eventObject)
+      this.$store.dispatch('TestData/addEventData', eventObject)
       this.resetQuickAddForm()
     },
     determineBorder(day) {
@@ -447,7 +447,7 @@ export default {
       this.eventAdd_FormValues.Minute = null
       this.eventAdd_FormValues.Type = null
       this.eventAdd_FormValues.Title = null
-      this.eventAdd_FormValues.Description = null
+      this.eventAdd_FormValues.Body = null
 
       this.showQuickAddDropDown = false
     },
