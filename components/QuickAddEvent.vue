@@ -110,7 +110,7 @@ import { uuid } from 'vue-uuid'
 
 
 export default {
-  props: ['currentlySelectedDate', 'monthDay', 'calendarIndex', 'year', 'month'],
+  props: ['currentlySelectedDate', 'monthDay', 'calendarIndex', 'year', 'month', 'calendarViewingState'],
   data() {
     return {
       eventAdd_FormValues: {
@@ -152,10 +152,12 @@ export default {
       this.resetQuickAddForm()
     },
     quickAddEvent_DropdownClass(indexPos) {
-      const leftIndexes = [1,8,15,22,29,36]
       const rightIndexes = [7,14,21,28,35]
 
-      if(rightIndexes.indexOf(indexPos) !== -1) {
+      if(this.calendarViewingState !== 'Monthly') {
+        return 'right-0 mr-2'
+      }
+      else if(rightIndexes.indexOf(indexPos) !== -1) {
         return 'right-0'
       } else {
         return 'left-0'

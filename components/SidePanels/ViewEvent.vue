@@ -12,7 +12,7 @@
         <div v-if="animationToggle" @click="toggleOffSidePanel()" class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
       </transition>
 
-      <section class="absolute inset-y-0 pl-16 max-w-full right-0 flex">
+      <section class="absolute inset-y-0 max-w-full right-0 flex">
         <transition       
             enter-active-class="transform transition ease-in-out duration-500 sm:duration-700"
             enter-class="translate-x-full"
@@ -21,10 +21,10 @@
             leave-class="translate-x-0"
             leave-to-class="translate-x-full"
         >
-          <div v-if="animationToggle" class="w-screen max-w-md">
+          <div v-if="animationToggle" class="w-screen max-w-xs sm:max-w-md">
             <div class="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
               <div class="flex-1 h-0 overflow-y-auto">
-                <header :class="determineEventColorClass(event.Type)"  class="space-y-1 py-6 px-4 sm:px-6">
+                <header :class="determineEventColorClass_Header(event.Type)"  class="space-y-1 py-6 px-4 sm:px-6">
                   <div class="flex items-center justify-between space-x-3">
                     <h2 class="text-lg leading-7 font-medium text-white">
                       {{ event.Type }} Details
@@ -151,10 +151,10 @@
                   </button>
                 </span>
                 <span class="inline-flex rounded-md shadow-sm">
-                  <button v-if="formState === 'View'" @click="formState = 'Edit'" type="submit" :class="determineEventColorClass(event.Type)"  class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white focus:outline-none transition duration-150 ease-in-out">
+                  <button v-if="formState === 'View'" @click="formState = 'Edit'" type="submit" :class="determineEventColorClass_Button(event.Type)"  class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white focus:outline-none transition duration-150 ease-in-out">
                     Edit
                   </button>
-                  <button v-if="formState === 'Edit'" @click="formState = 'View'" type="submit" :class="determineEventColorClass(event.Type)"  class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white focus:outline-none transition duration-150 ease-in-out">
+                  <button v-if="formState === 'Edit'" @click="formState = 'View'" type="submit" :class="determineEventColorClass_Button(event.Type)"  class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white focus:outline-none transition duration-150 ease-in-out">
                     Save
                   </button>
                 </span>
@@ -201,8 +201,12 @@ export default {
       // Give time for animation to finish before actually changing value in store, otherwise it will just disappear with animating. 
       setTimeout(() => {this.$store.dispatch('SidePanel/setSidePanelType', null)}, 500)
     },
-    determineEventColorClass(eventType) {
+    determineEventColorClass_Button(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600 hover:bg-pink-500 focus:border-pink-700 focus:shadow-outline-pink active:bg-pink-700'}, {'Type':'Workout','Class':'bg-orange-500 hover:bg-orange-400 focus:border-orange-600 focus:shadow-outline-orange active:bg-orange-600'}, {'Type':'Event','Class':'bg-green-400 hover:bg-green-300 focus:border-green-500 focus:shadow-outline-green active:bg-green-500'}]
+      return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
+    },
+    determineEventColorClass_Header(eventType) {
+      const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
     },
     updateEvent() {

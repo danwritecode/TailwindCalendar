@@ -60,15 +60,6 @@
                   </div>
                 </transition>
               </div>
-              <div class="ml-6">
-                <span class="inline-flex rounded-full shadow-sm">
-                  <button type="button" class="inline-flex items-center px-2.5 py-2.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
-                    <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </button>
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -98,7 +89,7 @@
                         leave-class="transform opacity-100 scale-100"
                         leave-to-class="transform opacity-0 scale-95"
                     >
-                      <QuickAddEvent v-if="showQuickAddDropDown" :year="year" :month="month" :currentlySelectedDate="currentlySelectedDate" :monthDay="(n - firstDayOfMonth) + 1" :calendarIndex="n" :showQuickAddDropDown.sync="showQuickAddDropDown"/>
+                      <QuickAddEvent v-if="showQuickAddDropDown" :year="year" :month="month" :currentlySelectedDate="currentlySelectedDate" :monthDay="(n - firstDayOfMonth) + 1" :calendarIndex="n" :showQuickAddDropDown.sync="showQuickAddDropDown" :calendarViewingState="'Monthly'" />
                     </transition>
                   </div>
                 </transition>
@@ -139,27 +130,55 @@
               </div>
             </div>
 
-            <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Week'" class="grid grid-cols-7 gap-0">
-              <div :key="weekday" v-for="(weekday, index) in weekdaysAbv" class="flex justify-center">
+            <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Week'">
+              <!-- <div :key="weekday" v-for="(weekday, index) in weekdaysAbv" class="flex justify-center">
                 <span v-if="index !== currentDayOfWeek" class="p-1 text-xs uppercase font-semibold text-gray-500">{{ weekday }}</span>
                 <span v-if="index === currentDayOfWeek" class="p-1 text-xs uppercase font-semibold text-white bg-gray-600 w-full text-center">{{ weekday }}</span>
-              </div>
-              <div :key="n" v-for="n in 7" :class="determineBorder(n)" class="p-2 h-screen w-full border-gray-200">
-                <span>{{ (n + currentDayOfMonth) - currentDayOfWeek - 1 }}</span>
-                <div class="mt-1.5">
-                  <ul class="grid grid-cols-1">
-                    <li :key="event.Title" v-for="event in mappedEvents((n + currentDayOfMonth) - currentDayOfWeek - 1, false )" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
-                      <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-5 text-white text-sm leading-3 font-medium rounded-l-md">
-                        {{ event.Type[0] }}
+              </div> -->
+              <div class="grid grid-cols-1">
+                <div :key="n" v-for="n in 7" :class="determineBorder(n)" class="p-2 border-gray-200 w-full relative" @mouseover="currentHoveringDay = n" @mouseleave="showQuickAddDropDown = false">
+                  <transition name="fade" mode="out-in">
+                    <div v-if="currentHoveringDay === n" class="w-4">
+                      <div class="absolute right-0 mr-2">
+                        <span class="inline-flex rounded-full shadow-sm">
+                          <button @click="showQuickAddDropDown = !showQuickAddDropDown, setCurrentDay((n + currentDayOfMonth) - currentDayOfWeek - 1)" type="button" class="inline-flex items-center px-0.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150">
+                            <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                          </button>
+                        </span>
                       </div>
-                      <div class="pl-1 flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-                        <div class="flex-1 text-sm leading-5 truncate">
-                          <button @click="toggleSidePanel('ViewEvent', event.Event_Id)" class="text-xs text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150 focus:outline-none">{{ event.Title }}</button>
-                          <p class="text-xs text-gray-500">{{ event.Time }}</p>
+                      <transition       
+                          enter-active-class="transition ease-out duration-100"
+                          enter-class="transform opacity-0 scale-95"
+                          enter-to-class="transform opacity-100 scale-100"
+                          leave-active-class="transition ease-in duration-75"
+                          leave-class="transform opacity-100 scale-100"
+                          leave-to-class="transform opacity-0 scale-95"
+                      >
+                        <QuickAddEvent v-if="showQuickAddDropDown" :year="year" :month="month" :currentlySelectedDate="currentlySelectedDate" :monthDay="(n + currentDayOfMonth) - currentDayOfWeek - 1" :calendarIndex="n" :showQuickAddDropDown.sync="showQuickAddDropDown" :calendarViewingState="'Weekly'"/>
+                      </transition>
+                    </div>
+                  </transition>
+                  <span class="text-sm font-semibold">{{ (n + currentDayOfMonth) - currentDayOfWeek - 1 }}</span>
+                  <div class="mt-1.5">
+                    <ul v-if="numOfEventsByDay((n + currentDayOfMonth) - currentDayOfWeek - 1) > 0" class="grid grid-cols-1 gap-2 sm:gap-2 sm:grid-cols-2">
+                      <li :key="event.Title" v-for="event in mappedEvents((n + currentDayOfMonth) - currentDayOfWeek - 1, false )" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
+                        <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-10 text-white text-sm leading-3 font-medium rounded-l-md">
+                          {{ event.Type[0] }}
                         </div>
-                      </div>
-                    </li>
-                  </ul>
+                        <div class="pl-1 flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                          <div class="flex-1 text-sm leading-5 truncate">
+                            <button @click="toggleSidePanel('ViewEvent', event.Event_Id)" class="text-xs text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150 focus:outline-none">{{ event.Title }}</button>
+                            <p class="text-xs text-gray-500">{{ event.Time }}</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <div v-else>
+                      <p class="text-center py-3 text-sm text-gray-300">Nothing scheduled</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
