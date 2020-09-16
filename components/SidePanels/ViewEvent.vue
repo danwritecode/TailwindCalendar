@@ -24,7 +24,7 @@
           <div v-if="animationToggle" class="w-screen max-w-md">
             <div class="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
               <div class="flex-1 h-0 overflow-y-auto">
-                <header class="space-y-1 py-6 px-4 bg-gray-700 sm:px-6">
+                <header :class="determineEventColorClass(event.Type)"  class="space-y-1 py-6 px-4 sm:px-6">
                   <div class="flex items-center justify-between space-x-3">
                     <h2 class="text-lg leading-7 font-medium text-white">
                       {{ event.Type }} Details
@@ -40,14 +40,6 @@
                 </header>
                 <div class="px-4 py-5">
                     <dl>
-                      <div>
-                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                          Type
-                        </dt>
-                        <dd class="text-sm leading-5 text-gray-900">
-                          {{ event.Type }}
-                        </dd>
-                      </div>
                       <div class="mt-4">
                         <dt class="text-sm leading-5 font-medium text-gray-500">
                           When
@@ -82,7 +74,7 @@
                   </button>
                 </span>
                 <span class="inline-flex rounded-md shadow-sm">
-                  <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition duration-150 ease-in-out">
+                  <button type="submit" :class="determineEventColorClass(event.Type)"  class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white focus:outline-none transition duration-150 ease-in-out">
                     Edit
                   </button>
                 </span>
@@ -119,7 +111,11 @@ export default {
       this.animationToggle = false
       // Give time for animation to finish before actually changing value in store, otherwise it will just disappear with animating. 
       setTimeout(() => {this.$store.dispatch('SidePanel/setSidePanelType', null)}, 500)
-    }
+    },
+    determineEventColorClass(eventType) {
+      const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600 hover:bg-pink-500 focus:border-pink-700 focus:shadow-outline-pink active:bg-pink-700'}, {'Type':'Workout','Class':'bg-orange-500 hover:bg-orange-400 focus:border-orange-600 focus:shadow-outline-orange active:bg-orange-600'}, {'Type':'Event','Class':'bg-green-400 hover:bg-green-300 focus:border-green-700 focus:shadow-outline-green active:bg-green-700'}]
+      return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
+    },
   }
 
 }
