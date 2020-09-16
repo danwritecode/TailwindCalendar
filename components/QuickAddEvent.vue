@@ -153,9 +153,14 @@ export default {
     },
     quickAddEvent_DropdownClass(indexPos) {
       const rightIndexes = [7,14,21,28,35]
+      const bottomWeeklyIndex = [5,6,7]
 
-      if(this.calendarViewingState !== 'Monthly') {
-        return 'right-0 mr-2'
+      if(this.calendarViewingState === 'Weekly') {
+        if(bottomWeeklyIndex.indexOf(indexPos) !== -1) {
+          return 'mr-2 bottom-0 right-0 origin-bottom-right weeklyBottomMargin'
+        } else {
+          return 'mr-2 right-0 origin-top-right'
+        }
       }
       else if(rightIndexes.indexOf(indexPos) !== -1) {
         return 'right-0'
@@ -179,5 +184,7 @@ export default {
 </script>
 
 <style>
-
+  .weeklyBottomMargin {
+    margin-bottom: 5.6rem;
+  }
 </style>
