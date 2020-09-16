@@ -300,6 +300,8 @@
 </template>
 
 <script>
+import { uuid } from 'vue-uuid'
+
 export default {
   data() {
     return {
@@ -366,9 +368,10 @@ export default {
     addNewEvent(day) {
       const eventDate = new Date(this.year, this.month-1, day, this.eventAdd_FormValues.Hour, this.eventAdd_FormValues.Minute)
       const eventObject = {
+                            'Event_Id': uuid.v1(),
                             'Type': this.eventAdd_FormValues.Type, 
                             'Title': this.eventAdd_FormValues.Title, 
-                            'Description': this.eventAdd_FormValues.Description,
+                            'Body': this.eventAdd_FormValues.Body,
                             'DateTime': eventDate, 
                             'Year': this.year, 
                             'Month': this.month, 
