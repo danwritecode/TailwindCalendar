@@ -5,19 +5,16 @@
     </transition>
 
     <ViewEventSidePanel v-if="sidePanelType === 'ViewEvent'" class="z-20"/>
-    <EditEventSidePanel v-if="sidePanelType === 'EditEvent'" />
     
   </div>
 </template>
 
 <script>
 import ViewEventSidePanel from '~/components/SidePanels/ViewEvent'
-import EditEventSidePanel from '~/components/SidePanels/EditEvent'
 
 export default {
   components: {
-    ViewEventSidePanel,
-    EditEventSidePanel
+    ViewEventSidePanel
   },
   computed: {
     sidePanelType: function() {
