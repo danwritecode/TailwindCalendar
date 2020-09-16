@@ -113,7 +113,7 @@ export default {
       setTimeout(() => {this.$store.dispatch('SidePanel/setSidePanelType', null)}, 500)
     },
     determineEventColorClass(eventType) {
-      const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600 hover:bg-pink-500 focus:border-pink-700 focus:shadow-outline-pink active:bg-pink-700'}, {'Type':'Workout','Class':'bg-orange-500 hover:bg-orange-400 focus:border-orange-600 focus:shadow-outline-orange active:bg-orange-600'}, {'Type':'Event','Class':'bg-green-400 hover:bg-green-300 focus:border-green-700 focus:shadow-outline-green active:bg-green-700'}]
+      const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600 hover:bg-pink-500 focus:border-pink-700 focus:shadow-outline-pink active:bg-pink-700'}, {'Type':'Workout','Class':'bg-orange-500 hover:bg-orange-400 focus:border-orange-600 focus:shadow-outline-orange active:bg-orange-600'}, {'Type':'Event','Class':'bg-green-400 hover:bg-green-300 focus:border-green-500 focus:shadow-outline-green active:bg-green-500'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
     },
   }
