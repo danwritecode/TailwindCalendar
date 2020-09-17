@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto px-6 py-4">
+  <div class="mx-auto px-2 py-2 sm:px-6 sm:py-4">
     <div class="mx-auto">
       <div class="bg-white shadow rounded-lg">
         <div class="bg-white px-4 py-5 border-b rounded-t-lg border-gray-200 sm:px-6">
@@ -65,7 +65,7 @@
         </div>
         <div>
           <transition name="fade" mode="out-in">
-            <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month'" :class="isMobile ? 'hidden':'block'" class="grid grid-cols-7 gap-0">
+            <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && !isMobile" class="grid grid-cols-7 gap-0">
               <div :key="weekday" v-for="weekday in weekdaysAbv" class="p-0.5 flex justify-center">
                 <p class="text-xs uppercase font-semibold text-gray-500">{{ weekday }}</p>
               </div>
@@ -129,6 +129,8 @@
                 </div>
               </div>
             </div>
+
+            <MobileMonthView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && isMobile"/>
 
             <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Week'">
               <div class="grid grid-cols-1">
@@ -242,10 +244,11 @@
 
 <script>
 import QuickAddEvent from '~/components/QuickAddEvent'
+import MobileMonthView from '~/components/MobileMonthView'
 
 export default {
   components: {
-    QuickAddEvent
+    QuickAddEvent, MobileMonthView
   },
   data() {
     return {
