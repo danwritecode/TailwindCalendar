@@ -298,7 +298,13 @@ export default {
 
     // Creating listener to toggle classes based on window width
     if (process.client) {
-		  window.addEventListener("resize", this.onResize);
+      window.addEventListener("resize", this.onResize);
+
+      if (window.innerWidth < 640) {
+        this.isMobile = true
+      } else {
+        this.isMobile = false
+      }
 		}
   },
   methods: {
