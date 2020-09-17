@@ -161,6 +161,8 @@ export default {
         } else {
           return 'mr-2 right-0 origin-top-right'
         }
+      } else  if(this.calendarViewingState === 'Day') {
+        return 'right-0 mr-2'
       }
       else if(rightIndexes.indexOf(indexPos) !== -1) {
         return 'right-0'
