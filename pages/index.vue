@@ -130,7 +130,7 @@
               </div>
             </div>
 
-            <MobileMonthView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && isMobile"/>
+            <MobileMonthView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && isMobile" :startMonth="month" :startYear="year"/>
 
             <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Week'">
               <div class="grid grid-cols-1">
