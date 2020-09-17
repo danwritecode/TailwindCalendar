@@ -160,7 +160,8 @@
                       </transition>
                     </div>
                   </transition>
-                  <span class="text-sm font-semibold">{{ (n + currentDayOfMonth) - currentDayOfWeek - 1 }}</span>
+                  <span class="text-sm font-semibold">{{ (n + currentDayOfMonth) - currentDayOfWeek - 1 }} &bull;</span>
+                  <span class="text-sm text-gray-700">{{ weekdaysFull[n - 1] }}</span>
                   <div class="mt-1.5">
                     <ul v-if="numOfEventsByDay((n + currentDayOfMonth) - currentDayOfWeek - 1) > 0" class="grid grid-cols-1 gap-2 sm:gap-2 sm:grid-cols-2">
                       <li :key="event.Title" v-for="event in mappedEvents((n + currentDayOfMonth) - currentDayOfWeek - 1, false )" class="mb-1.5 col-span-1 flex shadow-sm rounded-md">
@@ -230,6 +231,7 @@ export default {
       currentDayOfWeek: new Date().getDay(),
       months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
       weekdaysAbv: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
+      weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       showCalendarTypeDropdown: false,
       showQuickAddDropDown: false,
       currentCalendarLayout: 'Month',
