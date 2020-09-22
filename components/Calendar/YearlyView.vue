@@ -1,6 +1,6 @@
 <template>
-  <div class="p-2">
-    <div :key="year" v-for="year in 10" class="mb-2 w-full pb-8">
+  <div class="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-0 md:gap-4">
+    <div :key="year" v-for="year in 15" class="mb-2 w-full pb-8">
       <h3 class="leading-5 font-medium text-xl text-gray-800 border-b border-gray-200 pb-1">{{ startYear + (year-1) }} </h3>
       <div class="mt-3 grid grid-cols-3 gap-1.5">
         <div :key="month" v-for="month in 12" class="w-full" style="height:6.5rem;">

@@ -2,7 +2,7 @@
   <div class="mx-auto px-2 py-2 sm:px-6 sm:py-4">
     <div class="mx-auto">
       <div class="bg-white shadow rounded-lg">
-        <div class="bg-white px-4 py-5 border-b rounded-t-lg border-gray-200 sm:px-6">
+        <div class="bg-white px-1 py-3 sm:px-4 sm:py-5 border-b rounded-t-lg border-gray-200">
           <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-no-wrap">
             <div class="ml-4 mt-4">
               <div class="flex items-center">
@@ -52,6 +52,7 @@
                   <div v-if="showCalendarTypeDropdown" class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg z-10">
                     <div class="rounded-md bg-white shadow-xs">
                       <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <button @click="currentCalendarLayout = 'Year', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Year</button>
                         <button @click="currentCalendarLayout = 'Month', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Month</button>
                         <button @click="currentCalendarLayout = 'Week', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Week</button>
                         <button @click="currentCalendarLayout = 'Day', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Day</button>
@@ -234,6 +235,8 @@
                 </div>
               </div>
             </div>
+
+            <YearlyView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Year'" :startMonth="month" :startYear="year"/>
           </transition>
 
         </div>
@@ -245,10 +248,11 @@
 <script>
 import QuickAddEvent from '~/components/QuickAddEvent'
 import MobileMonthView from '~/components/MobileMonthView'
+import YearlyView from '~/components/Calendar/YearlyView'
 
 export default {
   components: {
-    QuickAddEvent, MobileMonthView
+    QuickAddEvent, MobileMonthView, YearlyView
   },
   data() {
     return {
