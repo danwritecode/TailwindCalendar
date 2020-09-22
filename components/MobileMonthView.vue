@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-    <div class="mb-2 w-full pb-8">
+    <div class="mb-2 w-full">
       <div class="mt-3">
         <div class="-mt-2 grid grid-cols-7 gap-4">
           <div :key="day" v-for="day in weekdaysAbv" class="text-center">
@@ -13,7 +13,7 @@
               </button>
             </span>
             <span v-if="highlightCurrentDay((day - firstDayOfMonth(startYear, startMonth)) + 1)" class="inline-flex items-center">
-              <button @click="$emit('update:currentDayOfMonth', (day - firstDayOfMonth(startYear, startMonth)) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-none text-white bg-gray-600 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
+              <button @click="$emit('update:currentDayOfMonth', (day - firstDayOfMonth(startYear, startMonth)) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-none text-white bg-gray-600 hover:bg-gray-500 transition ease-in-out duration-300 focus:outline-none">
                 {{ (day - firstDayOfMonth(startYear, startMonth)) + 1 }}
               </button>
             </span>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div @mouseover="showQuickAddButton = true" @mouseleave="showQuickAddDropDown = false, showQuickAddButton = false">
+    <div @mouseover="showQuickAddButton = true" @mouseleave="showQuickAddDropDown = false, showQuickAddButton = false" class="relative">
       <transition name="fade" mode="out-in">
         <div v-if="showQuickAddButton" class="w-4">
           <div class="absolute right-0 mr-2 mt-1">
@@ -41,11 +41,11 @@
               leave-class="transform opacity-100 scale-100"
               leave-to-class="transform opacity-0 scale-95"
           >
-            <QuickAddEvent v-if="showQuickAddDropDown" :year="year" :month="month" :currentlySelectedDate="currentlySelectedDate" :monthDay="currentDayOfMonth" :calendarIndex="currentDayOfMonth" :showQuickAddDropDown.sync="showQuickAddDropDown" :calendarViewingState="'Day'"/>
+            <QuickAddEvent v-if="showQuickAddDropDown" :year="startYear" :month="startMonth" :currentlySelectedDate="currentlySelectedDate" :monthDay="currentDayOfMonth" :calendarIndex="currentDayOfMonth" :showQuickAddDropDown.sync="showQuickAddDropDown" :calendarViewingState="'Day'"/>
           </transition>
         </div>
       </transition>
-      <div class="px-4 pt-8 pb-4">
+      <div class="-mt-6 px-4 pt-10 pb-4">
         <ul v-if="events.length > 0" class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2">
           <li class="col-span-1 flex shadow-sm rounded-md" :key="event.Title" v-for="event in events">
             <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-16 text-white text-xs leading-5 font-semibold rounded-l-md">
