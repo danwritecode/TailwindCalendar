@@ -7,8 +7,15 @@
             <span class="text-xs text-gray-700 font-medium">{{ day }}</span>
           </div>
           <div :key="day" v-for="day in 37" class="text-center h-3">
-            <span class="text-sm font-medium text-gray-900 leading-none" v-if="((day - firstDayOfMonth(startYear, startMonth)) + 1) > 0 && ((day - firstDayOfMonth(startYear, startMonth)) + 1) <= daysInMonth(startYear, startMonth)">
-              {{ (day - firstDayOfMonth(startYear, startMonth)) + 1 }}
+            <span v-if="((day - firstDayOfMonth(startYear, startMonth)) + 1) > 0 && ((day - firstDayOfMonth(startYear, startMonth)) + 1) <= daysInMonth(startYear, startMonth) && !highlightCurrentDay((day - firstDayOfMonth(startYear, startMonth)) + 1)">
+              <button @click="$emit('update:currentDayOfMonth', (day - firstDayOfMonth(startYear, startMonth)) + 1)" class="px-3 py-0.5 rounded-full text-sm font-medium text-gray-900 leading-none bg-white hover:bg-gray-200 transition ease-in-out duration-300 focus:outline-none">
+                {{ (day - firstDayOfMonth(startYear, startMonth)) + 1 }}
+              </button>
+            </span>
+            <span v-if="highlightCurrentDay((day - firstDayOfMonth(startYear, startMonth)) + 1)" class="inline-flex items-center">
+              <button @click="$emit('update:currentDayOfMonth', (day - firstDayOfMonth(startYear, startMonth)) + 1)" class="px-3 py-0.5 rounded-full text-sm font-semibold leading-none text-white bg-gray-600 hover:bg-gray-300 transition ease-in-out duration-300 focus:outline-none">
+                {{ (day - firstDayOfMonth(startYear, startMonth)) + 1 }}
+              </button>
             </span>
           </div>
         </div>
@@ -71,7 +78,7 @@
 import QuickAddEvent from '~/components/QuickAddEvent'
 
 export default {
-  props: ['startMonth', 'startYear', 'events', 'currentlySelectedDate', 'currentDayOfMonth'],
+  props: ['startMonth', 'startYear', 'events', 'currentlySelectedDate', 'currentDayOfMonth', 'currentDate'],
   components: {
     QuickAddEvent
   },
@@ -84,15 +91,19 @@ export default {
     };
   },
   methods: {
-    firstDayOfMonth(year, month) {
-      return new Date(year, month-1, 1).getDay() + 1
-    },
     daysInMonth(year, month) {
       return new Date(year, month, 0).getDate()
     },
     determineEventColorClass(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]
       return(calendarEventColorMapping.find(type => type.Type === eventType).Class)
+    },
+    firstDayOfMonth(year, month) {
+      return new Date(year, month-1, 1).getDay() + 1
+    },
+    highlightCurrentDay(day){
+      const date = new Date(this.startYear, this.startMonth -1, day)
+      return(date.getTime() === this.currentlySelectedDate.getTime() ? true:false)
     },
   }
 };

@@ -131,7 +131,7 @@
               </div>
             </div>
 
-            <MobileMonthView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && isMobile" :startMonth="month" :startYear="year" :events="eventsForCurrentDay" :currentlySelectedDate.sync="currentlySelectedDate" :currentDayOfMonth="currentDayOfMonth"/>
+            <MobileMonthView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Month' && isMobile" :startMonth="month" :startYear="year" :events="eventsForCurrentDay" :currentlySelectedDate="currentlySelectedDate" :currentDayOfMonth.sync="currentDayOfMonth" :currentDate="currentDate"/>
 
             <div :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Week'">
               <div class="grid grid-cols-1">
