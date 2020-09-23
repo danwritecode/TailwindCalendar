@@ -246,6 +246,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import QuickAddEvent from '~/components/QuickAddEvent'
 import MobileMonthView from '~/components/MobileMonthView'
 import YearlyView from '~/components/Calendar/YearlyView'
@@ -296,7 +297,7 @@ export default {
       return new Date(this.year,this.month -1, this.currentDayOfMonth)
     },
     eventsForCurrentDay: function() {
-      return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime())
+      return _.orderBy(this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === this.currentlySelectedDate.getTime()), ['Time'], ['asc'])
     }
   },
   created() {
@@ -360,14 +361,17 @@ export default {
       const date = new Date(this.year, this.month -1, day)
 
       if(limitArrayLength) {
-        return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()).slice(0, 3)
+        return _.orderBy(this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()), ['Time'], ['asc']).slice(0, 3)
       } else {
-        return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime())
+        return _.orderBy(this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()), ['Time'], ['asc'])
       }
     },
     numOfEventsByDay(day) {
       const date = new Date(this.year, this.month -1, day)
       return this.calendarData.filter(item => new Date(item.Year, item.Month - 1, item.Day).getTime() === date.getTime()).length
+    },
+    orderedEvents(events) {
+      return _.orderBy(events, ['Time'], ['asc'])
     },
     determineEventColorClass(eventType) {
       const calendarEventColorMapping = [{'Type':'Meeting', 'Class':'bg-pink-600'}, {'Type':'Workout','Class':'bg-orange-500'}, {'Type':'Event','Class':'bg-green-400'}]

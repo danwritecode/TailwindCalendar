@@ -45,7 +45,7 @@
           </transition>
         </div>
       </transition>
-      <div class="-mt-6 px-4 pt-10 pb-4">
+      <div class="-mt-6 px-2 pt-10 pb-4">
         <ul v-if="events.length > 0" class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2">
           <li class="col-span-1 flex shadow-sm rounded-md" :key="event.Title" v-for="event in events">
             <div :class="determineEventColorClass(event.Type)" class="flex-shrink-0 flex items-center justify-center w-16 text-white text-xs leading-5 font-semibold rounded-l-md">
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import QuickAddEvent from '~/components/QuickAddEvent'
 
 export default {
@@ -104,6 +105,10 @@ export default {
     highlightCurrentDay(day){
       const date = new Date(this.startYear, this.startMonth -1, day)
       return(date.getTime() === this.currentlySelectedDate.getTime() ? true:false)
+    },
+    toggleSidePanel(panelType, entityId) {
+      this.$store.dispatch('SidePanel/setSidePanelType', panelType)
+      this.$store.dispatch('SidePanel/setSidePanelEntityId', entityId)
     },
   }
 };

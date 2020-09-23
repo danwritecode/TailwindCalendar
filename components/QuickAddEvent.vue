@@ -1,5 +1,5 @@
 <template>
-  <div :class="quickAddEvent_DropdownClass(calendarIndex)" class="mt-7 origin-top-right absolute rounded-md shadow-lg bg-white z-10" style="width:18rem;">
+  <div :class="quickAddEvent_DropdownClass(calendarIndex)" class="mt-7 sm:origin-top-right absolute rounded-md shadow-lg bg-white z-10" style="width:18rem;">
     <div class="p-3 rounded-md bg-white shadow-xs">
       <div class="flex-1 flex flex-col justify-between">
         <div class="divide-y divide-gray-200">

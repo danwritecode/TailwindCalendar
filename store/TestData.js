@@ -8,7 +8,8 @@ export const state = () => ({
     {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986963', 'Type': 'Workout', 'Title': 'Go for a bike ride', 'Body':'Go for a 30 mile ride.', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '14:00:00'},
     {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986962', 'Type': 'Meeting', 'Title': 'Catch up with John', 'Body':'Quick catchup with John to discuss work load.', 'DateTime':'September 20, 2020 12:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '16:00:00'},
     {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986961', 'Type': 'Event', 'Title': 'Drinks for fundraiser', 'Body':'Get drinks at local fundraiser.', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'},
-    {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986960', 'Type': 'Event', 'Title': 'Golf with Clients', 'Body':'Go golfing with clients.', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'}
+    {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986960', 'Type': 'Event', 'Title': 'Golf with Clients', 'Body':'Go golfing with clients.', 'DateTime':'September 20, 2020 14:00:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '17:00:00'},
+    {'Event_Id':'b3720b49-273d-4ef2-bd92-d9c92d986960', 'Type': 'Meeting', 'Title': 'Discuss raise with Jane', 'Body':'Discuss yearly raise with Jane', 'DateTime':'September 20, 2020 09:30:00', 'Year': 2020, 'Month': 9, 'Day':20, 'Time': '09:30:00'}
   ]
 });
 
