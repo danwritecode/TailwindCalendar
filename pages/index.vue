@@ -52,7 +52,7 @@
                   <div v-if="showCalendarTypeDropdown" class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg z-10">
                     <div class="rounded-md bg-white shadow-xs">
                       <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <button @click="currentCalendarLayout = 'Year', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Year</button>
+                        <button @click="currentCalendarLayout = 'Year', showCalendarTypeDropdown = false, month = new Date().getMonth() + 1, year = new Date().getFullYear()" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Year</button>
                         <button @click="currentCalendarLayout = 'Month', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Month</button>
                         <button @click="currentCalendarLayout = 'Week', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Week</button>
                         <button @click="currentCalendarLayout = 'Day', showCalendarTypeDropdown = false" type="button" class="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Day</button>
@@ -236,7 +236,7 @@
               </div>
             </div>
 
-            <YearlyView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Year'" :startMonth="month" :startYear="year"/>
+            <YearlyView :key="currentCalendarLayout" v-if="currentCalendarLayout === 'Year'" :startMonth.sync="month" :startYear.sync="year" :currentCalendarLayout.sync="currentCalendarLayout"/>
           </transition>
 
         </div>

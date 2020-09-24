@@ -3,7 +3,7 @@
     <div :key="year" v-for="year in 15" class="mb-2 w-full pb-8">
       <h3 class="leading-5 font-medium text-xl text-gray-800 border-b border-gray-200 pb-1">{{ startYear + (year-1) }} </h3>
       <div class="mt-3 grid grid-cols-3 gap-1.5">
-        <button type="button" :key="month" v-for="month in 12" class="w-full text-gray-600 hover:text-black hover:font-medium hover:bg-gray-100 rounded-md transition ease-in-out duration-150" style="height:6.5rem;">
+        <button @click="selectMonth(month, startYear + (year-1))" type="button" :key="month" v-for="month in 12" class="w-full text-gray-600 hover:text-black hover:font-medium hover:bg-gray-100 rounded-md transition ease-in-out duration-150 focus:outline-none" style="height:6.5rem;">
           <h6 class="text-left px-1 leading-5 text-xs font-medium">{{ months[month-1] }}</h6>
           <div class="-mt-2 grid grid-cols-7" style="grid-gap: 0.10rem; gap: 0.10rem;">
             <div :key="day" v-for="day in 37" class="text-center h-3">
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ['startMonth', 'startYear'],
+  props: ['startMonth', 'startYear', 'currentCalendarLayout'],
   data() {
     return {
       months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
@@ -44,6 +44,11 @@ export default {
     highlightCurrentDay(day, month, year){
       const date = new Date(year, month-1, day)
       return(date.getTime() === this.currentDate.getTime() ? true:false)
+    },
+    selectMonth(month, year) {
+      this.$emit('update:startMonth', month)
+      this.$emit('update:startYear', year)
+      this.$emit('update:currentCalendarLayout', 'Month')
     }
   }
 };
